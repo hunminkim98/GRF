@@ -2,12 +2,13 @@ import sys
 import os
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QFileDialog,
                            QVBoxLayout, QHBoxLayout, QWidget, QLabel, QTableWidget,
-                           QTableWidgetItem, QStyle, QStatusBar, QMessageBox, QLineEdit, QGridLayout, QSizePolicy)
+                           QTableWidgetItem, QStyle, QStatusBar, QMessageBox, QLineEdit, QGridLayout, QSizePolicy,
+                           QTabWidget)
 from PyQt6.QtCore import Qt
 import numpy as np
 import opensim
 from load_file import load_mot
-from update_table import motion_update_table, position_update_table
+from update_table import motion_update_table, position_update_table, kinematics_update_table
 from position_contact import calculate_contact_positions
 from body_kinematics import body_kinematics
 
@@ -191,9 +192,8 @@ class OpenGRFGui(QMainWindow):
         preview_label = QLabel("Current Data Preview:")
         layout.addWidget(preview_label)
         
-        self.table = QTableWidget()
-        self.table.setAlternatingRowColors(True)
-        layout.addWidget(self.table)
+        self.tab_widget = QTabWidget()
+        layout.addWidget(self.tab_widget)
         
         # Status bar
         self.status_bar = QStatusBar()
@@ -233,8 +233,7 @@ class OpenGRFGui(QMainWindow):
         self.force_threshold.setText("400")
         
         # Clear table
-        self.table.setRowCount(0)
-        self.table.setColumnCount(0)
+        self.tab_widget.clear()
         
         # Update status
         self.status_bar.showMessage("Ready for new motion analysis ")
@@ -319,11 +318,14 @@ class OpenGRFGui(QMainWindow):
                 cutoff_freq
             )
             
+            # Update preview table
+            kinematics_update_table(self.tab_widget, kinematics_data)
+            
             ## Step2: Position of contact elements with verbose output
             contact_positions = calculate_contact_positions(self.model, heel_shift=0.0, verbose=True)
             
             # Update data preview table with position data
-            position_update_table(self.table, contact_positions)
+            position_update_table(self.tab_widget, contact_positions)
             QApplication.processEvents()  # Update UI
             
             self.grf_status.setText("Contact positions calculated. Calculating contact elements...")
@@ -354,7 +356,7 @@ class OpenGRFGui(QMainWindow):
             self.calculate_btn.setEnabled(True)
     
     def motion_update_table(self):
-        motion_update_table(self.table, self.motion_data, self.motion_headers, 
+        motion_update_table(self.tab_widget, self.motion_data, self.motion_headers, 
                     self.start_time.text(), self.end_time.text())
         
 def main():
