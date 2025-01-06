@@ -54,27 +54,17 @@ def load_sto(fname):
             - data: numpy array containing the data
             - headers: list of column headers
     """
-    print(f"starting to load sto")
+    print(f"starting to load sto: {fname}")
     with open(fname, 'r') as fid:
-        # Skip first 4 lines
-        for _ in range(4):
-            line = fid.readline()
-            
-        # Read nColumns
-        line = fid.readline().strip()
-        n_columns = int(line.split('=')[1])
-        
-        # Skip next 2 lines
-        for _ in range(2):
-            line = fid.readline()
-            
         # Read until endheader
         while True:
-            line = fid.readline().strip()
-            if line == 'endheader':
+            line = fid.readline()
+            if not line:  # EOF
+                raise ValueError("No 'endheader' found in file")
+            if line.strip() == 'endheader':
                 break
-                
-        # Read column headers (similar to textscan(line, '%s'))
+        
+        # Read column headers
         line = fid.readline()
         headers = [x for x in line.strip().split() if x]  # Remove empty strings
         
@@ -84,11 +74,16 @@ def load_sto(fname):
             line = fid.readline()
             if not line:  # EOF
                 break
-            # Convert line to float numbers (similar to textscan(line, '%f'))
-            row = [float(x) for x in line.strip().split()]
-            data_list.append(row)
-            
+            # Convert line to float numbers
+            try:
+                row = [float(x) for x in line.strip().split()]
+                data_list.append(row)
+            except ValueError as e:
+                print(f"Warning: Skipping invalid line: {line.strip()}")
+                continue
+        
         # Convert to numpy array
         data = np.array(data_list)
+        print(f"loaded {len(data)} rows with {len(headers)} columns")
         
     return data, headers
