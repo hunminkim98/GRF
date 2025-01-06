@@ -8,6 +8,7 @@ from PyQt6.QtGui import QMovie
 import numpy as np
 import opensim
 from load_file import load_mot
+from update_table import update_table
 
 class OpenGRFGui(QMainWindow):
     def __init__(self):
@@ -335,8 +336,18 @@ class OpenGRFGui(QMainWindow):
             self.calculate_btn.setEnabled(False)
             QApplication.processEvents()  # Update UI
             
-            # TODO: Implement actual GRF calculation here
-            # This will need to be implemented based on the MATLAB code
+            # TODO: Implement calculate position of contact elements
+            # Call function to calculate position of contact elements
+            # calculate_contact_elements_position(variables)
+
+            # TODO: Implement calculate contact elements
+            # Call function to calculate contact elements
+            # calculate_contact_elements(variables)
+            
+            # TODO: Implement GRF calculation
+            # Call function to calculate GRF
+            # calculate_grf(variables)
+            
             
             # Update status on completion
             self.grf_status.setText(" Calculation complete")
@@ -354,47 +365,8 @@ class OpenGRFGui(QMainWindow):
             self.calculate_btn.setEnabled(True)
     
     def update_table(self):
-        if self.motion_data is None or self.motion_headers is None:
-            return
-            
-        try:
-            # Get time range
-            start_time = float(self.start_time.text()) if self.start_time.text() else self.motion_data[0][0]
-            end_time = float(self.end_time.text()) if self.end_time.text() else self.motion_data[-1][0]
-            
-            # Find indices within time range
-            time_column = np.array(self.motion_data)[:, 0]
-            mask = (time_column >= start_time) & (time_column <= end_time)
-            filtered_data = np.array(self.motion_data)[mask]
-            
-            # Set up table
-            self.table.setRowCount(len(filtered_data))
-            self.table.setColumnCount(len(self.motion_headers))
-            self.table.setHorizontalHeaderLabels(self.motion_headers)
-            
-            # Fill data
-            for i in range(len(filtered_data)):
-                for j in range(len(self.motion_headers)):
-                    item = QTableWidgetItem(f"{filtered_data[i][j]:.6f}")
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    self.table.setItem(i, j, item)
-            
-            # Adjust column widths
-            self.table.resizeColumnsToContents()
-            
-        except ValueError:
-            # If time values are invalid, show all data
-            self.table.setRowCount(len(self.motion_data))
-            self.table.setColumnCount(len(self.motion_headers))
-            self.table.setHorizontalHeaderLabels(self.motion_headers)
-            
-            for i in range(len(self.motion_data)):
-                for j in range(len(self.motion_headers)):
-                    item = QTableWidgetItem(f"{self.motion_data[i][j]:.6f}")
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    self.table.setItem(i, j, item)
-            
-            self.table.resizeColumnsToContents()
+        update_table(self.table, self.motion_data, self.motion_headers, 
+                    self.start_time.text(), self.end_time.text())
         
 def main():
     app = QApplication(sys.argv)
