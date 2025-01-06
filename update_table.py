@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtCore import Qt
 import numpy as np
 
-def update_table(table, motion_data, motion_headers, start_time_text=None, end_time_text=None):
+def motion_update_table(table, motion_data, motion_headers, start_time_text=None, end_time_text=None):
     """
     Update the table with motion data filtered by time range.
     
@@ -54,3 +54,40 @@ def update_table(table, motion_data, motion_headers, start_time_text=None, end_t
                 table.setItem(i, j, item)
         
         table.resizeColumnsToContents()
+
+def position_update_table(table, position_data):
+    """
+    Update the table with contact position data and ground height values.
+    Args:
+        table: QTableWidget to update
+        position_data: Dictionary containing position data and ground height values
+    """
+    # Clear the table
+    table.clear()
+    table.setRowCount(0)
+    
+    # Set up headers
+    headers = ['Contact Point', 'X', 'Y', 'Z']
+    table.setColumnCount(len(headers))
+    table.setHorizontalHeaderLabels(headers)
+    
+    # Add data
+    row = 0
+    for key, value in sorted(position_data.items()):
+        table.insertRow(row)
+        table.setItem(row, 0, QTableWidgetItem(key))
+        
+        # Handle both coordinate lists and single ground height values
+        if isinstance(value, (list, tuple)):
+            # Contact position coordinates (X, Y, Z)
+            for j, coord in enumerate(value):
+                table.setItem(row, j+1, QTableWidgetItem(f"{coord:.6f}"))
+        else:
+            # Ground height value (single float) - display in Y column
+            table.setItem(row, 1, QTableWidgetItem("-"))
+            table.setItem(row, 2, QTableWidgetItem(f"{value:.6f}"))  # Y column
+            table.setItem(row, 3, QTableWidgetItem("-"))
+        row += 1
+    
+    # Adjust column widths
+    table.resizeColumnsToContents()

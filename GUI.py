@@ -2,13 +2,14 @@ import sys
 import os
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QFileDialog,
                            QVBoxLayout, QHBoxLayout, QWidget, QLabel, QTableWidget,
-                           QTableWidgetItem, QStyle, QStatusBar, QMessageBox, QLineEdit, QGridLayout)
+                           QTableWidgetItem, QStyle, QStatusBar, QMessageBox, QLineEdit, QGridLayout, QSizePolicy)
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QMovie
 import numpy as np
 import opensim
 from load_file import load_mot
-from update_table import update_table
+from update_table import motion_update_table, position_update_table
+from position_contact import calculate_contact_positions
+from body_kinematics import body_kinematics
 
 class OpenGRFGui(QMainWindow):
     def __init__(self):
@@ -21,11 +22,7 @@ class OpenGRFGui(QMainWindow):
         
         # Set the style
         self.setStyleSheet("""
-            QMainWindow {
-                background-color: #1e1e1e;
-            }
             QPushButton {
-                background-color: #2d2d2d;
                 color: #e0e0e0;
                 border: 1px solid #3d3d3d;
                 padding: 8px 16px;
@@ -35,11 +32,9 @@ class OpenGRFGui(QMainWindow):
                 max-width: 200px;
             }
             QPushButton:hover {
-                background-color: #3d3d3d;
                 border: 1px solid #4d4d4d;
             }
             QPushButton:disabled {
-                background-color: #252525;
                 color: #666666;
                 border: 1px solid #2d2d2d;
             }
@@ -47,14 +42,7 @@ class OpenGRFGui(QMainWindow):
                 color: #e0e0e0;
                 font-size: 13px;
             }
-            QTableWidget {
-                background-color: #2d2d2d;
-                color: #e0e0e0;
-                gridline-color: #3d3d3d;
-                border: none;
-            }
             QHeaderView::section {
-                background-color: #252525;
                 color: #e0e0e0;
                 padding: 5px;
                 border: 1px solid #3d3d3d;
@@ -63,7 +51,6 @@ class OpenGRFGui(QMainWindow):
                 color: #e0e0e0;
             }
             QLineEdit {
-                background-color: #2d2d2d;
                 color: #e0e0e0;
                 border: 1px solid #3d3d3d;
                 padding: 5px;
@@ -72,10 +59,8 @@ class OpenGRFGui(QMainWindow):
             }
             QLineEdit:focus {
                 border: 1px solid #4d4d4d;
-                background-color: #333333;
             }
             QLineEdit:disabled {
-                background-color: #252525;
                 color: #666666;
             }
         """)
@@ -145,10 +130,10 @@ class OpenGRFGui(QMainWindow):
         
         self.start_time = QLineEdit()
         self.start_time.setFixedWidth(100)
-        self.start_time.textChanged.connect(self.update_table)
+        self.start_time.textChanged.connect(self.motion_update_table)
         self.end_time = QLineEdit()
         self.end_time.setFixedWidth(100)
-        self.end_time.textChanged.connect(self.update_table)
+        self.end_time.textChanged.connect(self.motion_update_table)
         
         params_layout.addWidget(time_label1, 0, 0)
         params_layout.addWidget(self.start_time, 0, 1)
@@ -174,16 +159,6 @@ class OpenGRFGui(QMainWindow):
         # Add parameters to GRF section with left alignment
         param_container_layout = QHBoxLayout()
         param_container_layout.addWidget(params_container)
-        
-        # Add GIF to the right side
-        gif_label = QLabel()
-        gif_label.setFixedSize(100, 100)  # 크기 조절 가능
-        self.movie = QMovie("walking.gif")  # GIF 파일 경로 지정
-        self.movie.setScaledSize(gif_label.size())
-        gif_label.setMovie(self.movie)
-        self.movie.start()
-        
-        param_container_layout.addWidget(gif_label)
         param_container_layout.addStretch()
         
         grf_section.addWidget(grf_label)
@@ -213,7 +188,7 @@ class OpenGRFGui(QMainWindow):
         layout.addLayout(grf_section)
         
         # Data preview
-        preview_label = QLabel("Motion Data Preview:")
+        preview_label = QLabel("Current Data Preview:")
         layout.addWidget(preview_label)
         
         self.table = QTableWidget()
@@ -316,7 +291,7 @@ class OpenGRFGui(QMainWindow):
                     self.end_time.setText(str(self.motion_data[-1][0]))   # Last time point
                 
                 # Update preview table
-                self.update_table()
+                self.motion_update_table()
                 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error loading motion data: {str(e)}")
@@ -331,15 +306,29 @@ class OpenGRFGui(QMainWindow):
             force_threshold = float(self.force_threshold.text())
             
             # Update status
-            self.grf_status.setText("Calculating...")
+            self.grf_status.setText("Calculating body kinematics...")
             self.grf_status.setStyleSheet("color: #ffa000;")
             self.calculate_btn.setEnabled(False)
             QApplication.processEvents()  # Update UI
             
-            # TODO: Implement calculate position of contact elements
-            # Call function to calculate position of contact elements
-            # calculate_contact_elements_position(variables)
-
+            kinematics_data = body_kinematics(
+                self.model_path,  # OpenSim 모델 파일 경로
+                self.motion_path,
+                start_time,
+                end_time,
+                cutoff_freq
+            )
+            
+            ## Step2: Position of contact elements with verbose output
+            contact_positions = calculate_contact_positions(self.model, heel_shift=0.0, verbose=True)
+            
+            # Update data preview table with position data
+            position_update_table(self.table, contact_positions)
+            QApplication.processEvents()  # Update UI
+            
+            self.grf_status.setText("Contact positions calculated. Calculating contact elements...")
+            QApplication.processEvents()  # Update UI
+            
             # TODO: Implement calculate contact elements
             # Call function to calculate contact elements
             # calculate_contact_elements(variables)
@@ -364,8 +353,8 @@ class OpenGRFGui(QMainWindow):
         finally:
             self.calculate_btn.setEnabled(True)
     
-    def update_table(self):
-        update_table(self.table, self.motion_data, self.motion_headers, 
+    def motion_update_table(self):
+        motion_update_table(self.table, self.motion_data, self.motion_headers, 
                     self.start_time.text(), self.end_time.text())
         
 def main():

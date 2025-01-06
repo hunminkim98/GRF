@@ -54,6 +54,7 @@ def load_sto(fname):
             - data: numpy array containing the data
             - headers: list of column headers
     """
+    print(f"starting to load sto")
     with open(fname, 'r') as fid:
         # Skip first 4 lines
         for _ in range(4):
