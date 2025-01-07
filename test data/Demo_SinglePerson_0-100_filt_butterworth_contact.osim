@@ -6971,7 +6971,638 @@
 		</ConstraintSet>
 		<!--Forces in the model (includes Actuators).-->
 		<ForceSet name="forceset">
-			<objects />
+			<objects>
+				<HuntCrossleyForce name="ForceGround_Foot_1_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_1_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_2_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_2_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_1_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_1_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_2_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_2_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_3_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_3_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_3_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_3_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_4_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_4_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_4_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_4_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_5_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_5_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_5_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_5_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_6_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_6_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_6_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_6_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_7_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_7_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_7_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_7_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_8_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_8_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_8_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_8_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_9_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_9_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_9_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_9_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_10_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_10_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_10_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_10_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_11_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_11_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_11_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_11_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_12_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_12_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_12_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_12_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_13_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_13_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_13_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_13_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_14_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_R Sphere_Foot_14_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Foot_14_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Foot_L Sphere_Foot_14_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Hand_R">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Hand_R Sphere_Hand_R</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+				<HuntCrossleyForce name="ForceGround_Hand_L">
+					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
+					<appliesForce>true</appliesForce>
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>ground_Hand_L Sphere_Hand_L</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0</dissipation>
+								<static_friction>0</static_friction>
+								<dynamic_friction>0</dynamic_friction>
+								<viscous_friction>0</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+					<!--Slip velocity (creep) at which peak static friction occurs.-->
+					<transition_velocity>0.13</transition_velocity>
+				</HuntCrossleyForce>
+			</objects>
 			<groups />
 		</ForceSet>
 		<!--Markers in the model.-->

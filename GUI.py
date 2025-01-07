@@ -12,6 +12,7 @@ from update_table import motion_update_table, position_update_table, kinematics_
 from position_contact import calculate_contact_positions
 from body_kinematics import body_kinematics
 from contact_elements import create_contact_elements
+from contact_calibration import calibrate_contact_model
 
 class OpenGRFGui(QMainWindow):
     def __init__(self):
@@ -207,7 +208,10 @@ class OpenGRFGui(QMainWindow):
         self.motion_headers = None
         self.model_path = None
         self.motion_path = None
+        self.ik_result_path = None
         self.calculation_done = False
+        self.processed_model_path = None
+        self.ik_folder = None
     
     def reset_all(self):
         """Reset the application to its initial state"""
@@ -274,9 +278,11 @@ class OpenGRFGui(QMainWindow):
             )
             
             if file_name:
+                self.motion_path = file_name
+                self.ik_result_path = file_name
+                
                 # Load motion data using the load_mot function
                 self.motion_data, self.motion_headers = load_mot(file_name)
-                self.motion_path = file_name
                 
                 # Update UI
                 self.motion_status.setText(f" {os.path.basename(file_name)}")
@@ -332,11 +338,28 @@ class OpenGRFGui(QMainWindow):
             self.grf_status.setText("Contact positions calculated. Creating contact elements...")
             QApplication.processEvents()  # Update UI
             
-            # Create contact elements and save model
+            ## Step3: Create contact elements and save model
             contact_model_path = create_contact_elements(self.model, self.model_path, heel_shift=0.0, verbose=True)
             
+            ## Step4: Calibrate contact elements
+            self.grf_status.setText("Calibrating contact elements...")
+            QApplication.processEvents()  # Update UI
+            
+            # Get parameters from UI
+            force_threshold = float(self.force_threshold.text())
+            cutoff_freq = float(self.cutoff_freq.text())
+            
+            calibrated_model_path = calibrate_contact_model(
+                contact_model_path,
+                self.ik_result_path,
+                time_range=(start_time, end_time),  # Add time range
+                force_threshold=force_threshold,
+                delta=0.001,
+                cutoff_freq=cutoff_freq
+            )
+            
             # Update status to show model was saved
-            self.grf_status.setText(f"Contact model saved as: {os.path.basename(contact_model_path)}")
+            self.grf_status.setText(f"Calibrated contact model saved as: {os.path.basename(calibrated_model_path)}")
             QApplication.processEvents()  # Update UI
             
             # TODO: Implement GRF calculation
