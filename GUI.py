@@ -11,6 +11,7 @@ from load_file import load_mot
 from update_table import motion_update_table, position_update_table, kinematics_update_table
 from position_contact import calculate_contact_positions
 from body_kinematics import body_kinematics
+from contact_elements import create_contact_elements
 
 class OpenGRFGui(QMainWindow):
     def __init__(self):
@@ -311,7 +312,7 @@ class OpenGRFGui(QMainWindow):
             QApplication.processEvents()  # Update UI
             
             kinematics_data = body_kinematics(
-                self.model_path,  # OpenSim 모델 파일 경로
+                self.model_path,  # OpenSim model file path
                 self.motion_path,
                 start_time,
                 end_time,
@@ -328,17 +329,19 @@ class OpenGRFGui(QMainWindow):
             position_update_table(self.tab_widget, contact_positions)
             QApplication.processEvents()  # Update UI
             
-            self.grf_status.setText("Contact positions calculated. Calculating contact elements...")
+            self.grf_status.setText("Contact positions calculated. Creating contact elements...")
             QApplication.processEvents()  # Update UI
             
-            # TODO: Implement calculate contact elements
-            # Call function to calculate contact elements
-            # calculate_contact_elements(variables)
+            # Create contact elements and save model
+            contact_model_path = create_contact_elements(self.model, self.model_path, heel_shift=0.0, verbose=True)
+            
+            # Update status to show model was saved
+            self.grf_status.setText(f"Contact model saved as: {os.path.basename(contact_model_path)}")
+            QApplication.processEvents()  # Update UI
             
             # TODO: Implement GRF calculation
             # Call function to calculate GRF
             # calculate_grf(variables)
-            
             
             # Update status on completion
             self.grf_status.setText(" Calculation complete")
@@ -354,7 +357,7 @@ class OpenGRFGui(QMainWindow):
             self.status_bar.showMessage("GRF calculation failed ")
         finally:
             self.calculate_btn.setEnabled(True)
-    
+
     def motion_update_table(self):
         motion_update_table(self.tab_widget, self.motion_data, self.motion_headers, 
                     self.start_time.text(), self.end_time.text())
