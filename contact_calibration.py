@@ -6,6 +6,7 @@ from load_file import load_sto
 def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_threshold=400, delta=0.001, cutoff_freq=8.0):
     """
     Calibrates the contact elements of an OpenSim model by iteratively adjusting sphere positions.
+    Each sphere is adjusted independently based on its force threshold.
     
     Args:
         model_path (str): Path to the OpenSim model with contact elements
@@ -39,7 +40,7 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     analyze_tool.setModelFilename(model_path)
     analyze_tool.setCoordinatesFileName(ik_result_path)
     analyze_tool.setLowpassCutoffFrequency(cutoff_freq)
-    analyze_tool.setSolveForEquilibrium(False)
+    analyze_tool.setSolveForEquilibrium(True)
     
     if time_range:
         analyze_tool.setStartTime(time_range[0])
@@ -70,41 +71,45 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     
     # Find contact positions
     position_r, position_l = find_contact_positions(kinematics_pos_path, kinematics_acc_path)
-    
-    # Set calibrated model path that will be updated in each iteration
+    print(f"Position R: {position_r}")
+    print(f"Position L: {position_l}")
+
+    # Set calibrated model path
     calibrated_model_path = os.path.join(setup_dir, 'calibrated_model.osim')
     
+    # Get all contact spheres and store their initial positions
+    sphere_positions = {}  # Dictionary to store each sphere's position
+    contact_spheres = []
+    for i in range(1, 15):  # 1 to 14
+        for side in ['R', 'L']:
+            sphere_name = f'Sphere_Foot_{i}_{side}'
+            try:
+                sphere = model.getContactGeometrySet().get(sphere_name)
+                if not sphere:
+                    model_name = model.getName()
+                    sphere = model.getContactGeometrySet().get(f'{model_name}/{sphere_name}')
+                if not sphere:
+                    raise Exception(f"Could not find sphere {sphere_name}")
+                contact_spheres.append(sphere)
+                # Store initial position
+                pos = sphere.get_location()
+                sphere_positions[sphere_name] = opensim.Vec3(pos.get(0), pos.get(1), pos.get(2))
+            except Exception as e:
+                print(f"Error getting sphere {sphere_name}: {str(e)}")
+                raise
+    
     iteration = 0
-    while True:  # Continue until all forces are ok
-        # Get all contact spheres
-        contact_spheres = []
-        for i in range(1, 15):  # 1 to 14
-            for side in ['R', 'L']:
-                sphere_name = f'Sphere_Foot_{i}_{side}'
-                try:
-                    # Try with ContactGeometry path
-                    sphere = model.getContactGeometrySet().get(sphere_name)
-                    if not sphere:
-                        # Try with model name prefix
-                        model_name = model.getName()
-                        sphere = model.getContactGeometrySet().get(f'{model_name}/{sphere_name}')
-                    if not sphere:
-                        raise Exception(f"Could not find sphere {sphere_name}")
-                    contact_spheres.append(sphere)
-                except Exception as e:
-                    print(f"Error getting sphere {sphere_name}: {str(e)}")
-                    raise
-        
+    while True:
         # Initialize force tracking arrays
-        F_min_L = np.zeros(14)  # Minimum forces for left foot
-        F_min_R = np.zeros(14)  # Minimum forces for right foot
-        sphere_flags = np.zeros(28)  # Flags for each sphere (14 per foot)
+        F_min_L = np.zeros(14)
+        F_min_R = np.zeros(14)
+        sphere_flags = np.zeros(28)
+        all_forces_ok = True
         
         # Run ForceReporter to get current forces
         model.finalizeConnections()
         model.printToXML(calibrated_model_path)
         
-        # Update and run AnalyzeTool with current model
         iter_tool = opensim.AnalyzeTool(setup_file)
         iter_tool.setModelFilename(calibrated_model_path)
         iter_tool.setResultsDir(force_reporter_dir)
@@ -119,20 +124,18 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             raise FileNotFoundError(f"Force reporter output not found: {force_file}")
         force_data, force_headers = load_sto(force_file)
         
-        # Check forces and adjust positions
-        all_forces_ok = True
+        # Process each sphere independently
         for i, sphere in enumerate(contact_spheres):
-            # Get current position
-            pos = sphere.get_location()
-            
-            # Get force and check threshold
-            sphere_name = sphere.getName().replace('Sphere_', '')  # Remove 'Sphere_' prefix for force column
-            force_col = f'ForceGround_{sphere_name}.ground.force.Y'
+            sphere_name = sphere.getName()
+            force_col = f'ForceGround_{sphere_name.replace("Sphere_", "")}.ground.force.Y'
             force_idx = force_headers.index(force_col)
+            
+            # Get current position from stored positions
+            current_pos = sphere_positions[sphere_name]
             
             # Get force at specific position based on side
             side = sphere_name[-1]
-            sphere_num = int(sphere_name.split('_')[1])
+            sphere_num = int(sphere_name.split('_')[2])  # Changed to match MATLAB indexing
             if side == 'L':
                 force = force_data[position_l, force_idx]
             else:
@@ -143,15 +146,17 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             
             if abs(force) < threshold:
                 # Get original Y position for logging
-                old_y = pos.get(1)
+                old_y = current_pos.get(1)
                 
-                # Adjust Y position down
-                new_pos = opensim.Vec3(pos.get(0), pos.get(1) - delta, pos.get(2))
+                # Adjust Y position down for this specific sphere
+                new_y = old_y - delta
+                new_pos = opensim.Vec3(current_pos.get(0), new_y, current_pos.get(2))
                 sphere.set_location(new_pos)
+                sphere_positions[sphere_name] = new_pos  # Update stored position
                 
                 # Print position and force information
-                print(f"  {sphere.getName()}:")
-                print(f"    Y position adjusted by {delta*1000:.2f} mm (from {old_y*1000:.2f} mm to {new_pos.get(1)*1000:.2f} mm)")
+                print(f"  {sphere_name}:")
+                print(f"    Y position adjusted by {delta*1000:.2f} mm (from {old_y*1000:.2f} mm to {new_y*1000:.2f} mm)")
                 print(f"    Current force: {force:.2f} N (threshold: {threshold:.2f} N)")
                 
                 sphere_flags[i] = 0
@@ -159,18 +164,11 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             else:
                 # Store minimum force
                 if side == 'L':
-                    F_min_L[sphere_num - 1] = min(force_data[:, force_idx])  # Use min of all frames like MATLAB
+                    F_min_L[sphere_num - 1] = min(force_data[:, force_idx])
                 else:
-                    F_min_R[sphere_num - 1] = min(force_data[:, force_idx])  # Use min of all frames like MATLAB
+                    F_min_R[sphere_num - 1] = min(force_data[:, force_idx])
                 sphere_flags[i] = 1
-                
-                # Print force information for spheres that meet threshold
-                print(f"  {sphere.getName()}: Force {force:.2f} N meets threshold ({threshold:.2f} N)")
-        
-        # After all sphere updates, save model
-        if not all_forces_ok:
-            model.finalizeConnections()
-            model.printToXML(calibrated_model_path)
+                print(f"  {sphere_name}: Force {force:.2f} N meets threshold ({threshold:.2f} N)")
         
         # Print iteration summary
         print(f"\nIteration {iteration} Summary:")
@@ -178,9 +176,12 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
         print("Right foot min forces:", F_min_R)
         print("Sphere flags:", sphere_flags)
         
-        # If all forces are ok, return results
+        # Save model and check if done
+        model.finalizeConnections()
+        model.printToXML(calibrated_model_path)
+        
         if all_forces_ok:
-            return calibrated_model_path, F_min_L, F_min_R  # Return minimum forces for analysis
+            return calibrated_model_path, F_min_L, F_min_R
             
         iteration += 1
 
