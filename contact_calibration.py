@@ -1,8 +1,9 @@
 import opensim
 import numpy as np
 import os
+from load_file import load_sto
 
-def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_threshold=400, initial_delta=0.01, min_delta=0.001, cutoff_freq=8.0):
+def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_threshold=400, delta=0.001, cutoff_freq=8.0):
     """
     Calibrates the contact elements of an OpenSim model by iteratively adjusting sphere positions.
     
@@ -11,8 +12,7 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
         ik_result_path (str): Path to the IK results file (.mot)
         time_range (tuple): Start and end time for analysis (default: None, uses full range)
         force_threshold (float): Minimum required vertical force in N (default: 400)
-        initial_delta (float): Initial position adjustment increment in meters (default: 0.01)
-        min_delta (float): Minimum position adjustment increment in meters (default: 0.001)
+        delta (float): Position adjustment increment in meters (default: 0.001)
         cutoff_freq (float): Low-pass filter cutoff frequency in Hz (default: 8.0)
     
     Returns:
@@ -21,6 +21,15 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             - F_min_L (ndarray): Minimum forces for left foot spheres
             - F_min_R (ndarray): Minimum forces for right foot spheres
     """
+
+    # log basic parameters
+    print(f"Model path: {model_path}")
+    print(f"IK result path: {ik_result_path}")
+    print(f"Time range: {time_range}")
+    print(f"Force threshold: {force_threshold}")
+    print(f"Delta: {delta}")
+    print(f"Cutoff frequency: {cutoff_freq}")
+
     # Load the model
     model = opensim.Model(model_path)
     
@@ -39,6 +48,7 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     # Set results directory
     setup_dir = os.path.dirname(model_path)
     force_reporter_dir = os.path.join(setup_dir, 'ForceReporter')
+    BodyKinematics_dir = os.path.join(setup_dir, 'BK')
     os.makedirs(force_reporter_dir, exist_ok=True)
     analyze_tool.setResultsDir(force_reporter_dir)
     
@@ -53,6 +63,16 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     # Get the setup file directory
     setup_file = os.path.join(setup_dir, 'Setup_ForceReporter.xml')
     analyze_tool.printToXML(setup_file)
+    
+    # Get kinematics file paths
+    kinematics_pos_path = os.path.join(BodyKinematics_dir, '_BodyKinematics_pos_global.sto')
+    kinematics_acc_path = os.path.join(BodyKinematics_dir, '_BodyKinematics_acc_global.sto')
+    
+    # Find contact positions
+    position_r, position_l = find_contact_positions(kinematics_pos_path, kinematics_acc_path)
+    
+    # Set calibrated model path that will be updated in each iteration
+    calibrated_model_path = os.path.join(setup_dir, 'calibrated_model.osim')
     
     iteration = 0
     while True:  # Continue until all forces are ok
@@ -75,28 +95,29 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
                     print(f"Error getting sphere {sphere_name}: {str(e)}")
                     raise
         
-        # Run the analysis
+        # Initialize force tracking arrays
+        F_min_L = np.zeros(14)  # Minimum forces for left foot
+        F_min_R = np.zeros(14)  # Minimum forces for right foot
+        sphere_flags = np.zeros(28)  # Flags for each sphere (14 per foot)
+        
+        # Run ForceReporter to get current forces
+        model.finalizeConnections()
+        model.printToXML(calibrated_model_path)
+        
+        # Update and run AnalyzeTool with current model
         iter_tool = opensim.AnalyzeTool(setup_file)
+        iter_tool.setModelFilename(calibrated_model_path)
         iter_tool.setResultsDir(force_reporter_dir)
         if time_range:
             iter_tool.setStartTime(time_range[0])
             iter_tool.setFinalTime(time_range[1])
         iter_tool.run()
         
-        # Get force file path
+        # Load force data
         force_file = os.path.join(force_reporter_dir, '_ForceReporter_forces.sto')
-        
         if not os.path.exists(force_file):
-            print(f"Force file not found at: {force_file}")
-            print(f"Contents of {force_reporter_dir}:")
-            for f in os.listdir(force_reporter_dir):
-                print(f"  {f}")
             raise FileNotFoundError(f"Force reporter output not found: {force_file}")
-        
-        # Initialize force tracking arrays
-        F_min_L = np.zeros(14)  # Minimum forces for left foot
-        F_min_R = np.zeros(14)  # Minimum forces for right foot
-        sphere_flags = np.zeros(28)  # Flags for each sphere (14 per foot)
+        force_data, force_headers = load_sto(force_file)
         
         # Check forces and adjust positions
         all_forces_ok = True
@@ -105,91 +126,110 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             pos = sphere.get_location()
             
             # Get force and check threshold
-            sphere_name = sphere.getName()
-            force = get_vertical_force(force_file, sphere_name, get_min=True)
+            sphere_name = sphere.getName().replace('Sphere_', '')  # Remove 'Sphere_' prefix for force column
+            force_col = f'ForceGround_{sphere_name}.ground.force.Y'
+            force_idx = force_headers.index(force_col)
             
-            # Get sphere index and side
-            sphere_num = int(sphere_name.split('_')[2])
+            # Get force at specific position based on side
             side = sphere_name[-1]
+            sphere_num = int(sphere_name.split('_')[1])
+            if side == 'L':
+                force = force_data[position_l, force_idx]
+            else:
+                force = force_data[position_r, force_idx]
             
             # Use different threshold for front spheres (1-4)
             threshold = force_threshold / 3 if sphere_num <= 4 else force_threshold
             
             if abs(force) < threshold:
+                # Get original Y position for logging
+                old_y = pos.get(1)
+                
                 # Adjust Y position down
                 new_pos = opensim.Vec3(pos.get(0), pos.get(1) - delta, pos.get(2))
                 sphere.set_location(new_pos)
+                
+                # Print position and force information
+                print(f"  {sphere.getName()}:")
+                print(f"    Y position adjusted by {delta*1000:.2f} mm (from {old_y*1000:.2f} mm to {new_pos.get(1)*1000:.2f} mm)")
+                print(f"    Current force: {force:.2f} N (threshold: {threshold:.2f} N)")
+                
                 sphere_flags[i] = 0
                 all_forces_ok = False
             else:
                 # Store minimum force
                 if side == 'L':
-                    F_min_L[sphere_num - 1] = force
+                    F_min_L[sphere_num - 1] = min(force_data[:, force_idx])  # Use min of all frames like MATLAB
                 else:
-                    F_min_R[sphere_num - 1] = force
+                    F_min_R[sphere_num - 1] = min(force_data[:, force_idx])  # Use min of all frames like MATLAB
                 sphere_flags[i] = 1
+                
+                # Print force information for spheres that meet threshold
+                print(f"  {sphere.getName()}: Force {force:.2f} N meets threshold ({threshold:.2f} N)")
         
-        # Print iteration info
-        print(f"Iteration {iteration}:")
+        # After all sphere updates, save model
+        if not all_forces_ok:
+            model.finalizeConnections()
+            model.printToXML(calibrated_model_path)
+        
+        # Print iteration summary
+        print(f"\nIteration {iteration} Summary:")
         print("Left foot min forces:", F_min_L)
         print("Right foot min forces:", F_min_R)
         print("Sphere flags:", sphere_flags)
         
-        # Save model if forces are ok or continue
+        # If all forces are ok, return results
         if all_forces_ok:
-            model.finalizeConnections()
-            calibrated_model_path = os.path.join(setup_dir, 'calibrated_model.osim')
-            model.printToXML(calibrated_model_path)
             return calibrated_model_path, F_min_L, F_min_R  # Return minimum forces for analysis
             
         iteration += 1
 
-def get_vertical_force(force_file, sphere_name, get_min=True):
+def find_contact_positions(kinematics_pos_path, kinematics_acc_path):
     """
-    Gets the vertical (Y) component of the contact force for a given sphere.
+    Calculate the frame indices where feet are closest to ground with minimal acceleration
     
     Args:
-        force_file (str): Path to the ForceReporter results file (_ForceReporter_forces.sto)
-        sphere_name (str): Name of the sphere (e.g., 'Foot_1_L')
-        get_min (bool): If True, returns minimum force over all frames. If False, returns first frame force.
+        kinematics_pos_path (str): Path to BodyKinematics_pos_global.sto
+        kinematics_acc_path (str): Path to BodyKinematics_acc_global.sto
         
     Returns:
-        float: Vertical force value (minimum if get_min=True, otherwise first frame)
+        tuple: (position_r, position_l) frame indices
     """
-    # Load the force reporter results
-    with open(force_file, 'r') as f:
-        # Skip header until endheader
-        line = f.readline()
-        headers = []
-        while 'endheader' not in line:
-            if line.startswith('nRows='):
-                nRows = int(line.split('=')[1])
-            elif line.startswith('nColumns='):
-                nColumns = int(line.split('=')[1])
-            line = f.readline()
-        
-        # Read column headers
-        headers = f.readline().strip().split('\t')
-        
-        # Find the column index for the vertical force
-        force_column = -1
-        sphere_name = sphere_name.replace('Sphere_', '')  # Remove 'Sphere_' prefix for force column
-        for i, header in enumerate(headers):
-            if header == f'ForceGround_{sphere_name}.ground.force.Y':
-                force_column = i
-                break
-        
-        if force_column == -1:
-            raise ValueError(f"Force column not found for sphere {sphere_name}")
-        
-        # Read all force values
-        forces = []
-        for line in f:
-            values = line.strip().split('\t')
-            forces.append(float(values[force_column]))
-        
-        # Return minimum force if requested, otherwise first frame
-        if get_min:
-            return min(forces)
-        else:
-            return forces[0]
+    # Load position and acceleration data
+    pos_data, pos_headers = load_sto(kinematics_pos_path)
+    acc_data, acc_headers = load_sto(kinematics_acc_path)
+    
+    # Find column indices for calcn_r_Y and calcn_l_Y
+    calcn_r_y_idx = pos_headers.index('calcn_r_Y')
+    calcn_l_y_idx = pos_headers.index('calcn_l_Y')
+    
+    # Get position data
+    p_calcn_r_y = pos_data[:, calcn_r_y_idx]
+    p_calcn_l_y = pos_data[:, calcn_l_y_idx]
+    
+    # Find frames where position is near minimum
+    min_r = np.min(p_calcn_r_y)
+    min_l = np.min(p_calcn_l_y)
+    
+    range_pos_r = p_calcn_r_y < (min_r + min_r * 1/1000)
+    range_pos_l = p_calcn_l_y < (min_l + min_l * 1/1000)
+    
+    min_p_calcn_r_y = np.where(range_pos_r)[0]
+    min_p_calcn_l_y = np.where(range_pos_l)[0]
+    
+    # Get acceleration data for those frames
+    a_calcn_r_y = acc_data[:, acc_headers.index('calcn_r_Y')]
+    a_calcn_l_y = acc_data[:, acc_headers.index('calcn_l_Y')]
+    
+    # Find frame with minimum acceleration among minimum height frames
+    sub_r_acc = a_calcn_r_y[min_p_calcn_r_y]
+    sub_l_acc = a_calcn_l_y[min_p_calcn_l_y]
+    
+    pos_r = np.argmin(np.abs(sub_r_acc))
+    pos_l = np.argmin(np.abs(sub_l_acc))
+    
+    # Convert back to original frame indices
+    position_r = min_p_calcn_r_y[pos_r]
+    position_l = min_p_calcn_l_y[pos_l]
+    
+    return position_r, position_l

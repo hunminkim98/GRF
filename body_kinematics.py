@@ -43,7 +43,7 @@ def body_kinematics(
     # ------------------------------------------------------------------
     # 먼저 BodyKinematics 분석 도구 생성
     bk_tool = opensim.BodyKinematics()
-    bk_tool.setName("body_kinematics")  # 분석 도구 이름 설정
+    bk_tool.setName("BodyKinematics")  # 분석 도구 이름 설정
     bk_tool.setStartTime(start_time)
     bk_tool.setEndTime(end_time)
     bk_tool.setInDegrees(True)  # 각도 단위 설정
@@ -83,9 +83,9 @@ def body_kinematics(
     # ------------------------------------------------------------------
     # 5) 생성된 .sto 파일 읽기 (pos, vel, acc)
     # ------------------------------------------------------------------
-    pos_file = os.path.join(results_dir, "_body_kinematics_pos_global.sto")
-    vel_file = os.path.join(results_dir, "_body_kinematics_vel_global.sto")
-    acc_file = os.path.join(results_dir, "_body_kinematics_acc_global.sto")
+    pos_file = os.path.join(results_dir, "_BodyKinematics_pos_global.sto")
+    vel_file = os.path.join(results_dir, "_BodyKinematics_vel_global.sto")
+    acc_file = os.path.join(results_dir, "_BodyKinematics_acc_global.sto")
     print(f"{pos_file} loaded")
     print(f"{vel_file} loaded")
     print(f"{acc_file} loaded")
