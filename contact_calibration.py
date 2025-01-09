@@ -3,6 +3,56 @@ import numpy as np
 import os
 from load_file import load_sto
 
+def find_contact_positions(kinematics_pos_path, kinematics_acc_path):
+    """
+    Calculate the frame indices where feet are closest to ground with minimal acceleration
+    
+    Args:
+        kinematics_pos_path (str): Path to BodyKinematics_pos_global.sto
+        kinematics_acc_path (str): Path to BodyKinematics_acc_global.sto
+        
+    Returns:
+        tuple: (position_r, position_l) frame indices
+    """
+    # Load position and acceleration data
+    pos_data, pos_headers = load_sto(kinematics_pos_path)
+    acc_data, acc_headers = load_sto(kinematics_acc_path)
+    
+    # Find column indices for calcn_r_Y and calcn_l_Y
+    calcn_r_y_idx = pos_headers.index('calcn_r_Y')
+    calcn_l_y_idx = pos_headers.index('calcn_l_Y')
+    
+    # Get position data
+    p_calcn_r_y = pos_data[:, calcn_r_y_idx]
+    p_calcn_l_y = pos_data[:, calcn_l_y_idx]
+    
+    # Find frames where position is near minimum
+    min_r = np.min(p_calcn_r_y)
+    min_l = np.min(p_calcn_l_y)
+    
+    range_pos_r = p_calcn_r_y < (min_r + min_r * 1/1000)
+    range_pos_l = p_calcn_l_y < (min_l + min_l * 1/1000)
+    
+    min_p_calcn_r_y = np.where(range_pos_r)[0]
+    min_p_calcn_l_y = np.where(range_pos_l)[0]
+    
+    # Get acceleration data for those frames
+    a_calcn_r_y = acc_data[:, acc_headers.index('calcn_r_Y')]
+    a_calcn_l_y = acc_data[:, acc_headers.index('calcn_l_Y')]
+    
+    # Find frame with minimum acceleration among minimum height frames
+    sub_r_acc = a_calcn_r_y[min_p_calcn_r_y]
+    sub_l_acc = a_calcn_l_y[min_p_calcn_l_y]
+    
+    pos_r = np.argmin(np.abs(sub_r_acc))
+    pos_l = np.argmin(np.abs(sub_l_acc))
+    
+    # Convert back to original frame indices
+    position_r = min_p_calcn_r_y[pos_r]
+    position_l = min_p_calcn_l_y[pos_l]
+    
+    return position_r, position_l
+
 def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_threshold=400, delta=0.001, cutoff_freq=8.0):
     """
     Calibrates the contact elements of an OpenSim model by iteratively adjusting sphere positions.
@@ -31,6 +81,10 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     print(f"Delta: {delta}")
     print(f"Cutoff frequency: {cutoff_freq}")
 
+    ######################################
+    #####Step 1: Load necessary files#####
+    ######################################
+
     # Load the model
     model = opensim.Model(model_path)
     
@@ -53,6 +107,10 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     os.makedirs(force_reporter_dir, exist_ok=True)
     analyze_tool.setResultsDir(force_reporter_dir)
     
+    ######################################
+    ####Step 2: Set up force reporter#####
+    ######################################
+    
     # Set up force reporter
     force_reporter = opensim.ForceReporter()
     if time_range:
@@ -65,15 +123,30 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     setup_file = os.path.join(setup_dir, 'Setup_ForceReporter.xml')
     analyze_tool.printToXML(setup_file)
     
+    ######################################
+    ###Step 3: Get Body kinematics data###
+    ######################################
+    
     # Get kinematics file paths
     kinematics_pos_path = os.path.join(BodyKinematics_dir, '_BodyKinematics_pos_global.sto')
     kinematics_acc_path = os.path.join(BodyKinematics_dir, '_BodyKinematics_acc_global.sto')
+    
+
+    ######################################
+    ####Step 4: Find contact positions####
+    ######################################
     
     # Find contact positions
     position_r, position_l = find_contact_positions(kinematics_pos_path, kinematics_acc_path)
     print(f"Position R: {position_r}")
     print(f"Position L: {position_l}")
 
+    # NOTE: Seem to be okay untill here
+
+    ######################################
+    ##Step 5: Calibrate contact spheres###
+    ######################################
+    
     # Set calibrated model path
     calibrated_model_path = os.path.join(setup_dir, 'calibrated_model.osim')
     
@@ -83,21 +156,13 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     for i in range(1, 15):  # 1 to 14
         for side in ['R', 'L']:
             sphere_name = f'Sphere_Foot_{i}_{side}'
-            try:
-                sphere = model.getContactGeometrySet().get(sphere_name)
-                if not sphere:
-                    model_name = model.getName()
-                    sphere = model.getContactGeometrySet().get(f'{model_name}/{sphere_name}')
-                if not sphere:
-                    raise Exception(f"Could not find sphere {sphere_name}")
-                contact_spheres.append(sphere)
-                # Store initial position
-                pos = sphere.get_location()
-                sphere_positions[sphere_name] = opensim.Vec3(pos.get(0), pos.get(1), pos.get(2))
-            except Exception as e:
-                print(f"Error getting sphere {sphere_name}: {str(e)}")
-                raise
+            sphere = model.getContactGeometrySet().get(sphere_name)
+            contact_spheres.append(sphere)
+            # Store initial position
+            pos = sphere.get_location()
+            sphere_positions[sphere_name] = opensim.Vec3(pos.get(0), pos.get(1), pos.get(2))
     
+    # Calibrate contact spheres
     iteration = 0
     while True:
         # Initialize force tracking arrays
@@ -184,53 +249,3 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
             return calibrated_model_path, F_min_L, F_min_R
             
         iteration += 1
-
-def find_contact_positions(kinematics_pos_path, kinematics_acc_path):
-    """
-    Calculate the frame indices where feet are closest to ground with minimal acceleration
-    
-    Args:
-        kinematics_pos_path (str): Path to BodyKinematics_pos_global.sto
-        kinematics_acc_path (str): Path to BodyKinematics_acc_global.sto
-        
-    Returns:
-        tuple: (position_r, position_l) frame indices
-    """
-    # Load position and acceleration data
-    pos_data, pos_headers = load_sto(kinematics_pos_path)
-    acc_data, acc_headers = load_sto(kinematics_acc_path)
-    
-    # Find column indices for calcn_r_Y and calcn_l_Y
-    calcn_r_y_idx = pos_headers.index('calcn_r_Y')
-    calcn_l_y_idx = pos_headers.index('calcn_l_Y')
-    
-    # Get position data
-    p_calcn_r_y = pos_data[:, calcn_r_y_idx]
-    p_calcn_l_y = pos_data[:, calcn_l_y_idx]
-    
-    # Find frames where position is near minimum
-    min_r = np.min(p_calcn_r_y)
-    min_l = np.min(p_calcn_l_y)
-    
-    range_pos_r = p_calcn_r_y < (min_r + min_r * 1/1000)
-    range_pos_l = p_calcn_l_y < (min_l + min_l * 1/1000)
-    
-    min_p_calcn_r_y = np.where(range_pos_r)[0]
-    min_p_calcn_l_y = np.where(range_pos_l)[0]
-    
-    # Get acceleration data for those frames
-    a_calcn_r_y = acc_data[:, acc_headers.index('calcn_r_Y')]
-    a_calcn_l_y = acc_data[:, acc_headers.index('calcn_l_Y')]
-    
-    # Find frame with minimum acceleration among minimum height frames
-    sub_r_acc = a_calcn_r_y[min_p_calcn_r_y]
-    sub_l_acc = a_calcn_l_y[min_p_calcn_l_y]
-    
-    pos_r = np.argmin(np.abs(sub_r_acc))
-    pos_l = np.argmin(np.abs(sub_l_acc))
-    
-    # Convert back to original frame indices
-    position_r = min_p_calcn_r_y[pos_r]
-    position_l = min_p_calcn_l_y[pos_l]
-    
-    return position_r, position_l

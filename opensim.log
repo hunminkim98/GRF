@@ -1,0 +1,36 @@
+[2025-01-09 13:52:48.511] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.osim
+[2025-01-09 13:56:40.912] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:56:45.620] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.osim
+[2025-01-09 13:56:51.565] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.osim
+[2025-01-09 13:56:51.586] [info] No external loads will be applied (external loads file not specified).
+[2025-01-09 13:56:51.603] [info] Loading coordinates from file 'C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot'.
+[2025-01-09 13:56:51.603] [info] Storage: read data file = C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot (nr=100 nc=63)
+[2025-01-09 13:56:51.606] [info] Low-pass filtering coordinates data with a cutoff frequency of 8.0...
+[2025-01-09 13:56:57.705] [info] Found 200 state vectors with time stamps ranging from -0.833333 to 2.48333.
+[2025-01-09 13:56:57.705] [info] Executing the analyses from -3.3e-07 to 1.65...
+[2025-01-09 13:57:00.514] [info] Printing results of investigation  to C:/Users/5W555A/Desktop/GRF/test data\BK
+[2025-01-09 13:57:00.664] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:00.694] [info] AbstractTool  loading model C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:00.710] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:00.718] [info] No external loads will be applied (external loads file not specified).
+[2025-01-09 13:57:00.725] [info] Loading coordinates from file 'C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot'.
+[2025-01-09 13:57:00.725] [info] Storage: read data file = C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot (nr=100 nc=63)
+[2025-01-09 13:57:00.728] [info] Low-pass filtering coordinates data with a cutoff frequency of 8.0...
+[2025-01-09 13:57:06.503] [info] Found 200 state vectors with time stamps ranging from -0.833333 to 2.48333.
+[2025-01-09 13:57:06.503] [info] Executing the analyses from -3.3e-07 to 1.65...
+[2025-01-09 13:57:09.314] [info] Printing results of investigation  to C:/Users/5W555A/Desktop/GRF/test data\ForceReporter
+[2025-01-09 13:57:09.369] [info] AbstractTool  loading model C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:09.385] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:09.393] [info] No external loads will be applied (external loads file not specified).
+[2025-01-09 13:57:09.400] [info] Loading coordinates from file 'C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot'.
+[2025-01-09 13:57:09.400] [info] Storage: read data file = C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot (nr=100 nc=63)
+[2025-01-09 13:57:09.402] [info] Low-pass filtering coordinates data with a cutoff frequency of 8.0...
+[2025-01-09 13:57:15.241] [info] Found 200 state vectors with time stamps ranging from -0.833333 to 2.48333.
+[2025-01-09 13:57:15.241] [info] Executing the analyses from -3.3e-07 to 1.65...
+[2025-01-09 13:57:18.079] [info] Printing results of investigation  to C:/Users/5W555A/Desktop/GRF/test data\ForceReporter
+[2025-01-09 13:57:18.137] [info] AbstractTool  loading model C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:18.152] [info] Loaded model Pose2Sim_scaled from file C:/Users/5W555A/Desktop/GRF/test data\Demo_SinglePerson_0-100_filt_butterworth_contact.osim
+[2025-01-09 13:57:18.161] [info] No external loads will be applied (external loads file not specified).
+[2025-01-09 13:57:18.169] [info] Loading coordinates from file 'C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot'.
+[2025-01-09 13:57:18.169] [info] Storage: read data file = C:/Users/5W555A/Desktop/GRF/test data/Demo_SinglePerson_0-100_filt_butterworth.mot (nr=100 nc=63)
+[2025-01-09 13:57:18.172] [info] Low-pass filtering coordinates data with a cutoff frequency of 8.0...
