@@ -150,21 +150,27 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     # Set calibrated model path
     calibrated_model_path = os.path.join(setup_dir, 'calibrated_model.osim')
     
-    # Get all contact spheres and store their initial positions
-    sphere_positions = {}  # Dictionary to store each sphere's position
-    contact_spheres = []
+    # Get all contact spheres and store their initial positions (do this only once)
+    sphere_data = {}  # Dictionary to store sphere info and positions
     for i in range(1, 15):  # 1 to 14
         for side in ['R', 'L']:
             sphere_name = f'Sphere_Foot_{i}_{side}'
             sphere = model.getContactGeometrySet().get(sphere_name)
-            contact_spheres.append(sphere)
-            # Store initial position
+            
+            # Store sphere object and its initial position
             pos = sphere.get_location()
-            sphere_positions[sphere_name] = opensim.Vec3(pos.get(0), pos.get(1), pos.get(2))
+            sphere_data[sphere_name] = {
+                'sphere': sphere,
+                'position': opensim.Vec3(pos.get(0), pos.get(1), pos.get(2)),
+                'number': i,
+                'side': side
+            }
     
     # Calibrate contact spheres
     iteration = 0
     while True:
+        print(f"\nStarting iteration {iteration}")
+        
         # Initialize force tracking arrays
         F_min_L = np.zeros(14)
         F_min_R = np.zeros(14)
@@ -185,22 +191,20 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
         
         # Load force data
         force_file = os.path.join(force_reporter_dir, '_ForceReporter_forces.sto')
-        if not os.path.exists(force_file):
-            raise FileNotFoundError(f"Force reporter output not found: {force_file}")
         force_data, force_headers = load_sto(force_file)
         
         # Process each sphere independently
-        for i, sphere in enumerate(contact_spheres):
-            sphere_name = sphere.getName()
-            force_col = f'ForceGround_{sphere_name.replace("Sphere_", "")}.ground.force.Y'
+        for i, (sphere_name, data) in enumerate(sphere_data.items()):
+            sphere = data['sphere']
+            current_pos = data['position']
+            sphere_num = data['number']
+            side = data['side']
+            
+            # Get force data
+            force_col = f'ForceGround_Foot_{sphere_num}_{side}.ground.force.Y'
             force_idx = force_headers.index(force_col)
             
-            # Get current position from stored positions
-            current_pos = sphere_positions[sphere_name]
-            
             # Get force at specific position based on side
-            side = sphere_name[-1]
-            sphere_num = int(sphere_name.split('_')[2])  # Changed to match MATLAB indexing
             if side == 'L':
                 force = force_data[position_l, force_idx]
             else:
@@ -216,8 +220,10 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
                 # Adjust Y position down for this specific sphere
                 new_y = old_y - delta
                 new_pos = opensim.Vec3(current_pos.get(0), new_y, current_pos.get(2))
+                
+                # Update both the OpenSim model and our stored data
                 sphere.set_location(new_pos)
-                sphere_positions[sphere_name] = new_pos  # Update stored position
+                sphere_data[sphere_name]['position'] = new_pos
                 
                 # Print position and force information
                 print(f"  {sphere_name}:")
@@ -227,7 +233,7 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
                 sphere_flags[i] = 0
                 all_forces_ok = False
             else:
-                # Store minimum force
+                # Store minimum force across all frames
                 if side == 'L':
                     F_min_L[sphere_num - 1] = min(force_data[:, force_idx])
                 else:
