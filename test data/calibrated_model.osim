@@ -7792,7 +7792,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 -0.0089348241787746124</location>
+					<location>0 0.025804472536323834 -0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7800,7 +7800,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 -0.0089348241787746124</location>
+					<location>0 0.025804472536323834 -0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7808,7 +7808,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 0.0089348241787746124</location>
+					<location>0 0.025804472536323834 0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7816,7 +7816,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 0.0089348241787746124</location>
+					<location>0 0.025804472536323834 0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7824,7 +7824,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.031271884625711142 -1.1981955274636551 -0.017869648357549225</location>
+					<location>0.031271884625711142 0.025804472536323834 -0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7832,7 +7832,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.031271884625711142 -1.1981955274636551 -0.017869648357549225</location>
+					<location>0.031271884625711142 0.025804472536323834 -0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7840,7 +7840,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.031271884625711142 -1.1981955274636551 0.017869648357549225</location>
+					<location>0.031271884625711142 0.025804472536323834 0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7848,7 +7848,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.031271884625711142 -1.1981955274636551 0.017869648357549225</location>
+					<location>0.031271884625711142 0.025804472536323834 0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7856,7 +7856,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.022337060446936532 -1.1981955274636551 -0.0089348241787746124</location>
+					<location>0.022337060446936532 0.025804472536323834 -0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7864,7 +7864,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.022337060446936532 -1.1981955274636551 -0.017869648357549225</location>
+					<location>0.022337060446936532 0.025804472536323834 -0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7872,7 +7872,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.022337060446936532 -1.1981955274636551 0.017869648357549225</location>
+					<location>0.022337060446936532 0.025804472536323834 0.017869648357549225</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7880,7 +7880,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.022337060446936532 -1.1981955274636551 0.0089348241787746124</location>
+					<location>0.022337060446936532 0.025804472536323834 0.0089348241787746124</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7888,7 +7888,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.062543769251422285 -1.1981955274636551 -0.013402236268161918</location>
+					<location>0.062543769251422285 0.025804472536323834 -0.013402236268161918</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7896,7 +7896,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.062543769251422285 -1.1981955274636551 -0.031271884625711142</location>
+					<location>0.062543769251422285 0.025804472536323834 -0.031271884625711142</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7904,7 +7904,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.062543769251422285 -1.1981955274636551 0.031271884625711142</location>
+					<location>0.062543769251422285 0.025804472536323834 0.031271884625711142</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7912,7 +7912,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.062543769251422285 -1.1981955274636551 0.013402236268161918</location>
+					<location>0.062543769251422285 0.025804472536323834 0.013402236268161918</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7920,7 +7920,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.09381565387713342 -1.1981955274636551 -0.0044674120893873062</location>
+					<location>0.09381565387713342 0.025804472536323834 -0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7928,7 +7928,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.09381565387713342 -1.1981955274636551 -0.04020670880448575</location>
+					<location>0.09381565387713342 0.025804472536323834 -0.04020670880448575</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7936,7 +7936,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.09381565387713342 -1.1981955274636551 0.04020670880448575</location>
+					<location>0.09381565387713342 0.025804472536323834 0.04020670880448575</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7944,7 +7944,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.09381565387713342 -1.1981955274636551 0.0044674120893873062</location>
+					<location>0.09381565387713342 0.025804472536323834 0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7952,7 +7952,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.12508753850284457 -1.1981955274636551 -0.0044674120893873062</location>
+					<location>0.12508753850284457 0.025804472536323834 -0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7960,7 +7960,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.12508753850284457 -1.1981955274636551 -0.04020670880448575</location>
+					<location>0.12508753850284457 0.025804472536323834 -0.04020670880448575</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7968,7 +7968,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.12508753850284457 -1.1981955274636551 0.04020670880448575</location>
+					<location>0.12508753850284457 0.025804472536323834 0.04020670880448575</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7976,7 +7976,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/calcn_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0.12508753850284457 -1.1981955274636551 0.0044674120893873062</location>
+					<location>0.12508753850284457 0.025804472536323834 0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7984,7 +7984,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 -0.0044674120893873062</location>
+					<location>0 0.025804472536323834 -0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -7992,7 +7992,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 -0.026804472536323835</location>
+					<location>0 0.025804472536323834 -0.026804472536323835</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -8000,7 +8000,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_r</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 0.026804472536323835</location>
+					<location>0 0.025804472536323834 0.026804472536323835</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>
@@ -8008,7 +8008,7 @@
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/toes_l</socket_frame>
 					<!--Location of geometry center in the PhysicalFrame.-->
-					<location>0 -1.1981955274636551 0.0044674120893873062</location>
+					<location>0 0.025804472536323834 0.0044674120893873062</location>
 					<!--Radius of the sphere (default: 0).-->
 					<radius>0.02</radius>
 				</ContactSphere>

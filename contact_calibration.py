@@ -2,6 +2,7 @@ import opensim
 import numpy as np
 import os
 from load_file import load_sto
+import matplotlib.pyplot as plt
 
 def find_contact_positions(kinematics_pos_path, kinematics_acc_path):
     """
@@ -141,7 +142,92 @@ def calibrate_contact_model(model_path, ik_result_path, time_range=None, force_t
     print(f"Position R: {position_r}")
     print(f"Position L: {position_l}")
 
-    # NOTE: Seem to be okay untill here
+    # Visualize contact positions
+    pos_data, pos_headers = load_sto(kinematics_pos_path)
+    
+    
+    # Get time and position data
+    time = pos_data[:, 0]  # First column is typically time
+    calcn_r_y_idx = pos_headers.index('calcn_r_Y')
+    calcn_l_y_idx = pos_headers.index('calcn_l_Y')
+    calcn_r_y = pos_data[:, calcn_r_y_idx]
+    calcn_l_y = pos_data[:, calcn_l_y_idx]
+    
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(time, calcn_r_y, 'b-', label='Right Calcaneus')
+    plt.plot(time, calcn_l_y, 'r-', label='Left Calcaneus')
+    
+    # Mark contact positions
+    plt.axvline(x=time[position_r], color='b', linestyle='--', label='Right Contact')
+    plt.axvline(x=time[position_l], color='r', linestyle='--', label='Left Contact')
+    
+    plt.xlabel('Time (s)')
+    plt.ylabel('Vertical Position (m)')
+    plt.title('Calcaneus Vertical Positions and Contact Points')
+    plt.legend()
+    plt.grid(True)
+    
+    # Show the plot and visualize model poses
+    plt.show()
+
+    # Visualize model at contact frames using OpenSim visualizer
+    try:
+        # Initialize OpenSim model and set up visualization
+        model = opensim.Model(model_path)
+        model.setUseVisualizer(True)
+        
+        # Initialize the system and get state
+        state = model.initSystem()
+        
+        # Set up the visualizer
+        visualizer = model.updVisualizer().updSimbodyVisualizer()
+        visualizer.setBackgroundType(visualizer.GroundAndSky)
+        
+        # Load motion data from IK results
+        motion_table = opensim.TimeSeriesTable(ik_result_path)
+        
+        def visualize_frame(frame_idx):
+            """Helper function to visualize a specific frame"""
+            time = pos_data[frame_idx, 0]
+            state.setTime(time)
+            
+            # Update coordinates for this frame
+            for i, coord_name in enumerate(pos_headers[1:]):  # Skip time column
+                try:
+                    coord = model.getCoordinateSet().get(coord_name)
+                    if coord:
+                        coord.setValue(state, pos_data[frame_idx, i+1])
+                except Exception as e:
+                    print(f"Warning: Could not set coordinate {coord_name}: {str(e)}")
+            
+            # Realize to position for visualization
+            model.realizePosition(state)
+            
+            print(f"\nViewing frame {frame_idx} at time {time:.3f}s")
+            model.getVisualizer().show(state)
+            input("Press Enter to continue...")  # Pause to view the frame
+        
+        # Visualize right foot contact position
+        print("\nViewing right foot contact position...")
+        visualize_frame(position_r)
+        
+        # Visualize left foot contact position
+        print("\nViewing left foot contact position...")
+        visualize_frame(position_l)
+        
+    except Exception as e:
+        print(f"\nVisualization failed: {str(e)}")
+        print("Common causes:")
+        print("1. OpenSim/Simbody visualizer not properly installed")
+        print("2. Graphics driver issues")
+        print("3. Invalid model or motion data")
+    
+    # Ask for user confirmation to proceed
+    user_input = input("\nProceed with contact calibration? (y/n): ")
+    if user_input.lower() != 'y':
+        print("Calibration cancelled by user")
+        return None, None, None
 
     ######################################
     ##Step 5: Calibrate contact spheres###

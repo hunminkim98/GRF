@@ -371,7 +371,8 @@ class OpenGRFGui(QMainWindow):
             self.grf_status.setStyleSheet("color: #66bb6a;")
             self.calculation_done = True
             self.status_bar.showMessage("GRF calculation completed successfully ")
-            
+            self.visualize_btn.setEnabled(True)
+
         except ValueError as e:
             QMessageBox.critical(self, "Error", "Please enter valid numbers for all parameters")
             self.status_bar.showMessage("Invalid parameter values ")
@@ -384,7 +385,7 @@ class OpenGRFGui(QMainWindow):
     def motion_update_table(self):
         motion_update_table(self.tab_widget, self.motion_data, self.motion_headers, 
                     self.start_time.text(), self.end_time.text())
-        
+            
 def main():
     app = QApplication(sys.argv)
     
