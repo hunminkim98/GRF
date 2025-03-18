@@ -16,8 +16,6 @@ def body_kinematics(
        _BodyKinematics_vel_global.sto,
        _BodyKinematics_acc_global.sto 파일 생성
     2) 생성된 .sto 파일에서 (calcn_l, calcn_r, hand_l, hand_r) 위치, 속도, 가속도를 읽는다.
-    3) MATLAB 코드와 동일하게 발 최소 높이 위치(range_pos_r, range_pos_l)와
-       해당 시점(position_r, position_l)을 찾는다.
     
     Args:
         model_path (str): .osim 모델 경로
